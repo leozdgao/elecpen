@@ -45,9 +45,9 @@ exports.createLogger = function(opts) {
         var msg = prefix + ' ' + (timestamp ? getCurrentDateString(): '') + ' ';
         return function () {
             var args = Array.prototype.slice.call(arguments),
-                msg = util.format.apply(this, [].concat(msg, args));
+                entry = util.format.apply(this, [].concat(msg, args));
 
-            stream.write(msg + '\n');
+            stream.write(entry + '\n');
 
             if(logToConsole) {
               console.log(typeof decorator == 'function' ? decorator(msg) : msg);
