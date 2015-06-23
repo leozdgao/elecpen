@@ -1,9 +1,11 @@
 {
   "name": "elecpen",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "a simple logger",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "echo \"no test\""
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/leozdgao/logger.git"
