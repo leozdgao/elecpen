@@ -1,4 +1,4 @@
-# Logger
+# ElecPen
 
 A simple logger
 

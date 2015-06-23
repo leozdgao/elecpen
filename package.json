@@ -1,5 +1,5 @@
 {
-  "name": "logger",
+  "name": "elecpen",
   "version": "0.1.0",
   "description": "a simple logger",
   "main": "index.js",
