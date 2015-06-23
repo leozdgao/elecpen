@@ -1,0 +1,23 @@
+{
+  "name": "logger",
+  "version": "0.1.0",
+  "description": "a simple logger",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leozdgao/logger.git"
+  },
+  "keywords": [
+    "logger"
+  ],
+  "author": "leozdgao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leozdgao/logger/issues"
+  },
+  "homepage": "https://github.com/leozdgao/logger#readme",
+  "dependencies": {
+    "chalk": "^1.0.0"
+  }
+}
