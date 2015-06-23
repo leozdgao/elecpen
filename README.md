@@ -1,4 +1,4 @@
-# ElecPen
+# ElecPen  ![travis](https://travis-ci.org/leozdgao/logger.svg?branch=master)
 
 A simple logger
 
