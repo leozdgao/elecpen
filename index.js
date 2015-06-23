@@ -50,7 +50,7 @@ exports.createLogger = function(opts) {
             stream.write(entry + '\n');
 
             if(logToConsole) {
-              console.log(typeof decorator == 'function' ? decorator(msg) : msg);
+              console.log(typeof decorator == 'function' ? decorator(entry) : entry);
             }
         };
     }
