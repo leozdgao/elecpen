@@ -50,13 +50,21 @@ exports.createLogger = function(opts) {
             stream.write(entry + '\n');
 
             if(logToConsole) {
-              console.log(typeof decorator == 'function' ? decorator(entry) : entry);
+                console.log(typeof decorator == 'function' ? decorator(entry) : entry);
             }
         };
     }
 
     function getCurrentDateString() {
-        return Date();
+        var now = new Date();
+        return pad2(now.getMonth() + 1) + '-' + pad2(now.getDate()) + '-' +
+          now.getFullYear() + ' ' + pad2(now.getHours()) + ':' +
+          pad2(now.getMinutes()) + ':' + pad2(now.getSeconds())
+    }
+
+    function pad2(num) {
+        var num = String(num);
+        return num.length == 1 ? '0' + num: num;
     }
 
     return logger;
