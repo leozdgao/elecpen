@@ -21,7 +21,7 @@ A simple logger
 
 ### How to use?
 
-```
+```javascript
 var opts = {
   infoFile: 'info.log',  // record info and verbose
   errFile: 'err.log', // record error and warning
@@ -29,7 +29,7 @@ var opts = {
   timestamp: true, // default to true
   append: true // default to true
 };
-var fs = requrie('http');
+var http = requrie('http');
 var logger = require('logger').createLogger(opts);
 
 http.createServer(function(req, res) {
