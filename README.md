@@ -1,4 +1,7 @@
-# ElecPen  ![travis](https://travis-ci.org/leozdgao/logger.svg?branch=master)
+# ElecPen
+
+[![Build Status](https://travis-ci.org/leozdgao/elecpen.svg?branch=master)](https://travis-ci.org/leozdgao/elecpen)
+[![npm version](https://badge.fury.io/js/elecpen.svg)](https://badge.fury.io/js/elecpen)
 
 We take logger as a function to receive a record and output to a stream, and `elecPen` is a simple logger creator.
 
@@ -32,9 +35,12 @@ A set of logger is provided by a default logger creator which provide some usefu
 - logger.warning
 - logger.error
 
-### Example
+## Example
 
-```javascript
+You can you a set of default logger:
+
+```js
+// use default logger
 var opts = {
   infoFile: 'info.log',  // record info and verbose
   errFile: 'err.log', // record error and warning
@@ -43,7 +49,7 @@ var opts = {
   append: true // default to true
 };
 var http = requrie('http');
-var logger = require('logger').createLogger(opts);
+var logger = require('elecpen').defaultLogger(opts);
 
 http.createServer(function(req, res) {
   logger.info('Recieve a request. Path: %s', req.path);
@@ -52,4 +58,11 @@ http.createServer(function(req, res) {
 .listen(4000, function() {
   logger.info('Server listening...');
 });
+```
+
+Or create you own logger:
+```js
+var createLogger = require('elecpen')
+var log = createLogger(stdout, 'Message')
+log('Hello World!')
 ```
