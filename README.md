@@ -1,6 +1,20 @@
 # ElecPen  ![travis](https://travis-ci.org/leozdgao/logger.svg?branch=master)
 
-A simple logger
+We take logger as a function to receive a record and output to a stream, and `elecPen` is a simple logger creator.
+
+## API
+
+`elecPen(writable, prefix, dateFormat)`
+
+|Param|Description|
+|-----|-----------|
+|writable|A writable stream for logging|
+|prefix|The prefix of the record|
+|dateFormat|Date format for logger or pass `true` to use the default format|
+
+## Default logger
+
+A set of logger is provided by a default logger creator which provide some useful logger like `info` or `error`.
 
 ### Options
 
@@ -8,8 +22,7 @@ A simple logger
 |------|-----------|
 |infoFile|File name for logging info and verbose|
 |errFile|File name for logging error and warning|
-|logToConsole|Write to console too|
-|timestamp|Add timestamp for an entry|
+|timestamp|Date format for logger or pass `true` to use the default format|
 |append|If file exists, append new entries to it instead of truncating|
 
 ### Methods
@@ -19,7 +32,7 @@ A simple logger
 - logger.warning
 - logger.error
 
-### How to use?
+### Example
 
 ```javascript
 var opts = {
