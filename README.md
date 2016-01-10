@@ -21,12 +21,12 @@ A set of logger is provided by a default logger creator which provide some usefu
 
 ### Options
 
-|Option|Description|
-|------|-----------|
-|infoFile|File name for logging info and verbose|
-|errFile|File name for logging error and warning|
-|timestamp|Date format for logger or pass `true` to use the default format|
-|append|If file exists, append new entries to it instead of truncating|
+|Option|Type|Description|
+|------|----|-----------|
+|infoFile|string, function|File name for logging info and verbose|
+|errFile|string, function|File name for logging error and warning|
+|timestamp|string, boolean|Date format for logger or pass `true` to use the default format|
+|append|boolean|If file exists, append new entries to it instead of truncating|
 
 ### Methods
 
@@ -41,28 +41,56 @@ You can you a set of default logger:
 
 ```js
 // use default logger
-var opts = {
+const opts = {
   infoFile: 'info.log',  // record info and verbose
   errFile: 'err.log', // record error and warning
-  logToConsole: true,
-  timestamp: true, // default to true
+  timestamp: true,
   append: true // default to true
-};
-var http = requrie('http');
-var logger = require('elecpen').defaultLogger(opts);
+}
+const http = requrie('http')
+const logger = require('elecpen').defaultLogger(opts)
 
-http.createServer(function(req, res) {
-  logger.info('Recieve a request. Path: %s', req.path);
-  res.end('Hello world.');
+http.createServer((req, res) => {
+  logger.info('Recieve a request. Path: %s', req.path)
+  res.end('Hello world.')
 })
-.listen(4000, function() {
-  logger.info('Server listening...');
-});
+.listen(4000, _ => {
+  logger.info('Server listening...')
+})
+```
+
+Dynamic file name is supported, and it is useful to record log by separated file.
+
+```js
+const opts = {
+  infoFile () {
+    const now = new Date()
+    return `log-${now.getFullYear()}-${now.getMonth() + 1}`
+  },
+  errFile: 'err.log'
+}
+const logger = require('elecpen').defaultLogger(opts)
+logger.info('Hello World!')
 ```
 
 Or create you own logger:
+
 ```js
-var createLogger = require('elecpen')
-var log = createLogger(stdout, 'Message')
+const fs = require('fs')
+const elecpen = require('elecpen')
+const recorder = elecpen.streamRecorder()
+
+const log = function (msg) {
+  // dynamic stream
+  const stream = recorder(
+    _ => `log-${Date.now()}.log`,
+    name => fs.createWriteStream(name, { flags: 'a' })
+  )
+  stream && elecpen(stream, 'Message', timestamp)(msg)
+}
 log('Hello World!')
 ```
+
+## License
+
+MIT

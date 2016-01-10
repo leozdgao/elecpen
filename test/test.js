@@ -37,14 +37,12 @@ describe('Test actions of the logger.', function() {
   })
 
   it('Should append to an existed file.', function(done) {
-    var expect = /(?:^|\n*)\[Info\] (.*?) Hello world(?:\n+|$)/g
     logger2.info('Hello world')
+    logger2.info('Hello world')
+
     fs.readFile(infoFile, { encoding: 'utf-8' }, function(err, result) {
-      var m, count = 0
-      while((m = expect.exec(result)) != null) {
-        count++
-      }
-      assert.equal(count, 2)
+      var lines = result.split('\n')
+      assert.equal(lines.length, 3)
       done(err)
     })
   })

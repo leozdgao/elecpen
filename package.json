@@ -1,6 +1,6 @@
 {
   "name": "elecpen",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "a simple logger",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/leozdgao/logger#readme",
   "dependencies": {
     "chalk": "^1.0.0",
+    "debug": "^2.2.0",
     "moment": "^2.11.1"
   },
   "devDependencies": {
