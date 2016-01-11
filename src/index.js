@@ -9,19 +9,28 @@ function isFunction (v) {
   return typeof v == 'function'
 }
 
+function isDefined (v) {
+  // filter `null` and `void 0`
+  return v !== null
+}
+
+function isDev () {
+  return process.env['NODE_ENV'] !== 'production'
+}
+
 /**
  * Main method for create logger. The logger is just a function to recieve
  * the record and write to a stream.
  *
- * @param  {Writable} writable A writable stream for logging
- * @param  {string} prefix    The prefix to write
- * @param  {string | bool} date      The date format
+ * @param  {Writable}       writable    A writable stream for logging
+ * @param  {string}         prefix      The prefix to write
+ * @param  {string | bool}  date        The date format
  * @return {function} A function use like `console.log`
  */
-function createLogger (writable, prefix, dateFormat) {
-  if (!(writable && typeof writable.write === 'function')) {
-    throw Error("The logger expected a writable stream.")
-  }
+function createLogger (writables, prefix, dateFormat) {
+  if (!Array.isArray(writables)) writables = [ writables ]
+
+  writables = writables.filter(w => isDefined(w) && isFunction(w.write))
 
   let pre = `[${prefix}]`
   // default timestamp format
@@ -31,7 +40,7 @@ function createLogger (writable, prefix, dateFormat) {
   }
 
   return msg => {
-    writable.write(`${pre} ${msg}\n`)
+    writables.forEach(w => w.write(`${pre} ${msg}\n`))
   }
 }
 
@@ -52,8 +61,14 @@ function useDefaultLogger (opts) {
   const {
     infoFile, errFile,
     append = true,
-    timestamp = true // string for a date format or pass true to use default format
+    timestamp = true, // string for a date format or pass true to use default format
   } = opts
+
+  // The value of `logToConsole` default to true in dev mode
+  let logToConsole = opts.logToConsole
+  if (isDev() && !isDefined(logToConsole)) {
+    logToConsole = true
+  }
 
   const flag = append ? 'a' : 'w'
   const infoStream = infoFile && fs.createWriteStream(infoFile, { flags: flag })
@@ -64,20 +79,28 @@ function useDefaultLogger (opts) {
 
   return {
     verbose () {
-      const stream = infoRecorder(infoFile, name => fs.createWriteStream(name, { flags: flag }))
-      stream && createLogger(stream, 'Verbose', timestamp).apply(this, arguments)
+      let stream = infoRecorder(infoFile, name => fs.createWriteStream(name, { flags: flag }))
+      if (logToConsole) stream = [ process.stdout, stream ]
+
+      createLogger(stream, 'Verbose', timestamp).apply(this, arguments)
     },
     info () {
-      const stream = infoRecorder(infoFile, name => fs.createWriteStream(name, { flags: flag }))
-      stream && createLogger(stream, 'Info', timestamp).apply(this, arguments)
+      let stream = infoRecorder(infoFile, name => fs.createWriteStream(name, { flags: flag }))
+      if (logToConsole) stream = [ process.stdout, stream ]
+
+      createLogger(stream, 'Info', timestamp).apply(this, arguments)
     },
     warning () {
-      const stream = errRecorder(errFile, name => fs.createWriteStream(name, { flags: flag }))
-      stream && createLogger(stream, 'Warning', timestamp).apply(this, arguments)
+      let stream = errRecorder(errFile, name => fs.createWriteStream(name, { flags: flag }))
+      if (logToConsole) stream = [ process.stderr, stream ]
+
+      createLogger(stream, 'Warning', timestamp).apply(this, arguments)
     },
     error () {
-      const stream = errRecorder(errFile, name => fs.createWriteStream(name, { flags: flag }))
-      stream && createLogger(stream, 'Error', timestamp).apply(this, arguments)
+      let stream = errRecorder(errFile, name => fs.createWriteStream(name, { flags: flag }))
+      if (logToConsole) stream = [ process.stderr, stream ]
+
+      createLogger(stream, 'Error', timestamp).apply(this, arguments)
     }
   }
 }

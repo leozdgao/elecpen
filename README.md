@@ -11,7 +11,7 @@ We take logger as a function to receive a record and output to a stream, and `el
 
 |Param|Description|
 |-----|-----------|
-|writable|A writable stream for logging|
+|writables|One or an array of writable stream for logging|
 |prefix|The prefix of the record|
 |dateFormat|Date format for logger or pass `true` to use the default format|
 
@@ -27,6 +27,7 @@ A set of logger is provided by a default logger creator which provide some usefu
 |errFile|string, function|File name for logging error and warning|
 |timestamp|string, boolean|Date format for logger or pass `true` to use the default format|
 |append|boolean|If file exists, append new entries to it instead of truncating|
+|logToConsole|boolean|Output the message to console, it will be default to true in dev mode|
 
 ### Methods
 
