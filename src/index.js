@@ -11,7 +11,7 @@ function isFunction (v) {
 
 function isDefined (v) {
   // filter `null` and `void 0`
-  return v !== null
+  return v != null
 }
 
 function isDev () {
@@ -31,6 +31,8 @@ function createLogger (writables, prefix, dateFormat) {
   if (!Array.isArray(writables)) writables = [ writables ]
 
   writables = writables.filter(w => isDefined(w) && isFunction(w.write))
+
+  debug(`There are ${writables.length} writables for this logger`)
 
   let pre = `[${prefix}]`
   // default timestamp format
@@ -67,6 +69,8 @@ function useDefaultLogger (opts) {
   // The value of `logToConsole` default to true in dev mode
   let logToConsole = opts.logToConsole
   if (isDev() && !isDefined(logToConsole)) {
+    debug('In dev mode and `logToConsole` is set to true.')
+
     logToConsole = true
   }
 
